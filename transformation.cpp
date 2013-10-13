@@ -28,8 +28,8 @@ Transformation::Transformation(Matrix mat){
  	vec4 temp = m.mat * vec4(v.x,v.y,v.z,0);
  	return Normal(temp[0],temp[1],temp[2]);
  }
- Ray Transformation::operator*(Ray){
- 	return Ray();
+ Ray Transformation::operator*(Ray r){
+ 	return Ray((*this)*r.pos,(*this)*r.dir,r.t_min,r.t_max);
  }
  Localgeo Transformation::operator*(Localgeo){
  	return Localgeo(Point(),Normal());
