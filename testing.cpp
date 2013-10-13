@@ -37,9 +37,7 @@ int main(){
 	cout<<n<<endl;
 	Matrix m1 = Matrix();
 
-	float stuff[16];
-	for(int i=0;i<16;i++)
-		stuff[i]=i+5;
+	float stuff[16] = {8,4,4,4,	9,5,9,5,	6,5,4,6,	5,4,4,5};
 	Matrix m2 = Matrix(stuff);
 
 	cout<<m1<<endl;
