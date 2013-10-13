@@ -3,8 +3,9 @@
 
 class Sample {
 public:
-	float x,y,z;
-	Sample(float,float,float);
+	float x,y;
+	Sample();
+	Sample(float,float);
 	
 };
 

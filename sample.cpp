@@ -6,9 +6,12 @@
 #include "math.h"
 using namespace std;
 
-Sample::Sample(float nx, float ny, float nz){
-	x=nx;
-	y=ny;
-	z=nz;  
+Sample::Sample(){
+	this->x=0;
+	this->y=0;
+}
+Sample::Sample(float nx, float ny){
+	this->x=nx;
+	this->y=ny;  
 }
 

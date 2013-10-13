@@ -6,10 +6,13 @@
 #include "math.h"
 using namespace std;
 
-
+Localgeo::Localgeo(){
+	this->pos=Point();
+	this->normal=Normal();
+}
 Localgeo::Localgeo(Point p, Normal nom){
-   pos = p;
-   normal = nom; 
+   this->pos = p;
+   this->normal = nom; 
 }
 
 

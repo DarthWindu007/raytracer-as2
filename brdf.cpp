@@ -6,14 +6,18 @@
 #include "math.h"
 using namespace std;
 BRDF::BRDF(){
-	kd=Color();
-	ks=Color();
-	ka=Color();
-	kr=Color();
+	this->ka=Color(0.1,0.1,0.1);
+	this->kd=Color();
+	this->ks=Color();
+	this->kr=Color();
+	this->p=1;
+	this->n=0;
 }
-BRDF::BRDF(Color a,Color b, Color c,Color d){
-    kd = a;
-    ks = b;
-    ka = c;
-    kr = d; 
+BRDF::BRDF(Color a,Color b, Color c,Color d,float p,float n){
+    this->ka = a;
+    this->kd = b;
+    this->ks = c;
+    this->kr = d;
+    this->p=p;
+    this->n=n; 
 }

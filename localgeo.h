@@ -8,6 +8,7 @@ class Localgeo {
 public:
 	Point pos;
 	Normal normal;
+	Localgeo();
 	Localgeo(Point,Normal);
 };
 

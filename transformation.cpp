@@ -8,24 +8,24 @@
 using namespace std;
 
 Transformation::Transformation(){
-	m=Matrix::identityMat();
-	minvt=m.inv();
+	this->m=Matrix::identityMat();
+	this->minvt=m.inv();
 }
 Transformation::Transformation(Matrix mat){
-	m = mat;
-	minvt = mat.inv();;
+	this->m = mat;
+	this->minvt = mat.inv();;
 }
 
  Point Transformation::operator*(Point p){
- 	vec4 temp = m.mat * vec4(p.x,p.y,p.z,1);
+ 	vec4 temp = this->m.mat * vec4(p.x,p.y,p.z,1);
  	return Point(temp[0],temp[1],temp[2]);
  }
  Vector Transformation::operator*(Vector v){
- 	vec4 temp = m.mat * vec4(v.x,v.y,v.z,0);
+ 	vec4 temp = this->m.mat * vec4(v.x,v.y,v.z,0);
  	return Vector(temp[0],temp[1],temp[2]);
  }
  Normal Transformation::operator*(Normal v){
- 	vec4 temp = m.mat * vec4(v.x,v.y,v.z,0);
+ 	vec4 temp = this->m.mat * vec4(v.x,v.y,v.z,0);
  	return Normal(temp[0],temp[1],temp[2]);
  }
  Ray Transformation::operator*(Ray r){

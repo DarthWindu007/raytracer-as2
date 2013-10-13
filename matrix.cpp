@@ -6,23 +6,23 @@ using namespace std;
 #define _USE_MATH_DEFINES
 
 Matrix::Matrix(){
-	mat = mat4(0);
+	this->mat = mat4(0);
 }
 Matrix::Matrix(float *m){
-	mat = mat4(vec4(m[0],m[1],m[2],m[3]),vec4(m[4],m[5],m[6],m[7]),vec4(m[8],m[9],m[10],m[11]),vec4(m[12],m[13],m[14],m[15]));
+	this->mat = mat4(vec4(m[0],m[1],m[2],m[3]),vec4(m[4],m[5],m[6],m[7]),vec4(m[8],m[9],m[10],m[11]),vec4(m[12],m[13],m[14],m[15]));
 }
 Matrix::Matrix(mat4 m){
-	mat=m;
+	this->mat=m;
 }
 
 Matrix Matrix::operator+(Matrix m ){
-	return mat+m.mat;
+	return this->mat+m.mat;
 }
 Matrix Matrix::operator-(Matrix m){
-	return mat-m.mat;
+	return this->mat-m.mat;
 }
 Matrix Matrix::operator*(Matrix m){
-	return mat*m.mat;
+	return this->mat*m.mat;
 }
 Matrix Matrix::transMat(float x,float y,float z){
 	return Matrix(translation3D(vec3(x,y,z)));

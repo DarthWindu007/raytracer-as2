@@ -6,14 +6,14 @@
 using namespace std;
 
 Vector::Vector(){
-	x=0;
-	y=0;
-	z=0;
+	this->x=0;
+	this->y=0;
+	this->z=0;
 }
 Vector::Vector(float nx, float ny, float nz){
-	x=nx;
-	y=ny;
-	z=nz;  
+	this->x=nx;
+	this->y=ny;
+	this->z=nz;  
 }
 
 Vector Vector::operator+(Vector v2){

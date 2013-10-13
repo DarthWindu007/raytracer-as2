@@ -6,16 +6,16 @@
 using namespace std;
 
 Normal::Normal(){
-	x=0;
-	y=0;
-	z=0;
+	this->x=0;
+	this->y=0;
+	this->z=0;
 }
 Normal::Normal(float nx, float ny, float nz){
 	Vector vec = Vector(nx,ny,nz);
 	vec = vec.norm();
-	x=vec.x;
-	y=vec.y;
-	z=vec.z;  
+	this->x=vec.x;
+	this->y=vec.y;
+	this->z=vec.z;  
 }
 
 Normal Normal::operator+(Normal n2){
