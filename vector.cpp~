@@ -1,0 +1,41 @@
+#include "vector.h"
+#include "point.h"
+#include <iostream>
+#include <typeinfo>
+#include "math.h"
+using namespace std;
+
+Vector::Vector(){
+	x=0;
+y=0;
+z=0;
+}
+Vector::Vector(float nx, float ny, float nz){
+	x=nx;
+	y=ny;
+	z=nz;  
+}
+
+Vector Vector::operator+(Vector v2){
+	return Vector(this->x+v2.x,this->y+v2.y,this->z+v2.z);
+}
+Vector Vector::operator-(Vector v2){
+	return (*this)+(v2*-1.0f); // is the same as this.operator+(v2*-1.0f);
+}
+Vector Vector::operator*(float v2){
+	return Vector(v2*this->x,v2*this->y,v2*this->z);
+}
+Vector Vector::operator/(float v2){
+	return (*this)*(1.0f/v2);
+}
+Vector Vector::norm(){
+	float d = sqrt(pow(this->x,2)+pow(this->y,2)+pow(this->z,2));
+	return (*this)/d;
+}
+
+
+////////
+
+
+
+

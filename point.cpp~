@@ -1,0 +1,20 @@
+#include "vector.h"
+#include "point.h"
+#include <iostream>
+#include <typeinfo>
+#include "math.h"
+using namespace std;
+
+Point::Point(float nx, float ny, float nz){
+	x=nx;
+	y=ny;
+	z=nz;  
+}
+
+Point Point::operator+(Vector n2){
+    return Point(this->x + n2.x,this->y + n2.y,this->z + n2.z);
+}
+
+Point Point::operator-(Vector n2){
+    return Point(this->x - n2.x,this->y - n2.y,this->z - n2.z);
+}
