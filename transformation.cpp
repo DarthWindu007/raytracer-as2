@@ -31,8 +31,8 @@ Transformation::Transformation(Matrix mat){
  Ray Transformation::operator*(Ray r){
  	return Ray((*this)*r.pos,(*this)*r.dir,r.t_min,r.t_max);
  }
- Localgeo Transformation::operator*(Localgeo){
- 	return Localgeo(Point(),Normal());
+ Localgeo Transformation::operator*(Localgeo lg){
+ 	return Localgeo((*this)*lg.pos,(*this)*lg.normal);
  }
 
  Transformation Transformation::inv(){
