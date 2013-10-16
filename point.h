@@ -10,6 +10,7 @@ public:
 	Point(float,float,float);
 	Point operator+(Vector);
 	Point operator-(Vector);
+	Vector operator-(Point);
 };
 
 std::ostream& operator<<(std::ostream&, const Point&);

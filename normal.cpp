@@ -11,6 +11,16 @@ Normal::Normal(){
 	this->z=0;
 }
 Normal::Normal(float nx, float ny, float nz){
+	setStuff(nx,ny,nz);
+}
+Normal::Normal(Point p){
+	setStuff(p.x,p.y,p.z);
+}
+Normal::Normal(Vector v){
+	setStuff(v.x,v.y,v.z);
+}
+
+void Normal::setStuff(float nx, float ny, float nz){
 	Vector vec = Vector(nx,ny,nz);
 	vec = vec.norm();
 	this->x=vec.x;

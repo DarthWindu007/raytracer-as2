@@ -11,8 +11,8 @@ endif
 	
 RM = /bin/rm -f 
 all: main 
-main:  point.o vector.o normal.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o testing.o
-	$(CC) $(CFLAGS) -o as2 testing.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
+main:  point.o vector.o normal.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
+	$(CC) $(CFLAGS) -o as2 testing.o sphere.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
 vector.o: vector.cpp
 	$(CC) $(CFLAGS) -c vector.cpp -o vector.o
 normal.o: normal.cpp
@@ -33,6 +33,10 @@ matrix.o: matrix.cpp
 	$(CC) $(CFLAGS) -c matrix.cpp -o matrix.o
 transformation.o: transformation.cpp
 	$(CC) $(CFLAGS) -c transformation.cpp -o transformation.o
+sphere.o: sphere.cpp
+	$(CC) $(CFLAGS) -c sphere.cpp -o sphere.o
+triangle.o: triangle.cpp
+	$(CC) $(CFLAGS) -c triangle.cpp -o triangle.o
 testing.o: testing.cpp
 	$(CC) -c $(CFLAGS) testing.cpp -o testing.o
 clean: 
