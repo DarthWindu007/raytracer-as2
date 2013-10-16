@@ -90,9 +90,9 @@ bool Sphere::intersect(Ray& ray, float* thit, Localgeo* local){
             br1 = root1 < ray.t_min || root1 > ray.t_max;
             br2 = root2 < ray.t_min || root2 > ray.t_max;
 
-            if(br1)
+            if(!br1)
               setLocal(this,ray, thit, local, root1);
-            else if(br2)
+            else if(!br2)
               setLocal(this,ray,thit,local,root2);
             else
               return false;

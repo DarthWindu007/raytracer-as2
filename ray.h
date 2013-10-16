@@ -10,6 +10,7 @@ public:
     float t_max;
     Ray();
     Ray(Point , Vector , float ,float );
+    float rayGetT(Point);
     Point rayPos(float);
 };
 

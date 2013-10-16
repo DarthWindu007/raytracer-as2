@@ -4,6 +4,7 @@
 #include <typeinfo>
 #include "math.h"
 #include "triangle.h"
+#include "algebra3.h"
 using namespace std;
 
 // (p−c)·(p−c)−R^2 =0 
@@ -94,7 +95,13 @@ bool Triangle::intersect(Ray& ray, float* thit, Localgeo* local){
            
            T = (x1*(y2*z3 - y3*z2) - y1 *(x2*z3-x3*z2) + z1*(x2*y3 - x3*y2))/A;
 
-           
+           Point P = this->a + B*(this->b-this->a) + V*(this->c - this->a);
+           *thit = T;
+           Vector p1 = this->b-this->a;
+           Vector p2 = this->c-this->a;
+           vec3 cr = vec3(p1.x,p1.y,p1.z)^vec3(p2.x,p2.y,p2.z);
+           local->normal = Normal(cr[0],cr[1],cr[2]);
+           local->pos = P;
 
            if(T < ray.t_min || T > ray.t_max){
             return false;
