@@ -10,6 +10,7 @@ public:
 	Color operator+(Color);
 	Color operator-(Color);
 	Color operator*(float);
+	Color operator*(Color);
 	Color operator/(float);
 };
 

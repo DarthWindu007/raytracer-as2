@@ -3,6 +3,7 @@
 #include <iostream>
 #include "algebra3.h"
 
+
 class Vector {
 public:
 	float x,y,z;
@@ -11,6 +12,7 @@ public:
 	Vector(float,float,float);
 	Vector operator+(Vector);
 	Vector operator-(Vector);
+	float operator*(Vector);
 	Vector operator*(float);
 	Vector operator/(float);
 	Vector norm();

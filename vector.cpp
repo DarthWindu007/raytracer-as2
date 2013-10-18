@@ -28,6 +28,9 @@ Vector Vector::operator+(Vector v2){
 Vector Vector::operator-(Vector v2){
 	return (*this)+(v2*-1.0f); // is the same as this.operator+(v2*-1.0f);
 }
+float Vector::operator*(Vector v2){
+	return v2.x*this->x+v2.y*this->y+v2.z*this->z;
+}
 Vector Vector::operator*(float v2){
 	return Vector(v2*this->x,v2*this->y,v2*this->z);
 }

@@ -52,6 +52,13 @@ Normal Normal::operator-(Normal n2){
 	}
 }
 
+float Normal::operator*(Normal n2){
+	return this->x*n2.x + this->y *n2.y + this->z *n2.z;
+}
+Normal Normal::operator*(float n){
+	return Normal(this->x*n,this->y*n,this->z*n);
+}
+
 ostream& operator<<(ostream &strm, const Normal &a){
 	return strm << "Normal(" << a.x << ", " << a.y << ", " << a.z << ")";
 }

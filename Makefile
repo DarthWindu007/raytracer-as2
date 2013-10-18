@@ -6,13 +6,13 @@ ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
     	-lGL -lGLU -lm -lstdc++
 else
 	CFLAGS = -g -DGL_GLEXT_PROTOTYPES -Iglut-3.7.6-bin
-	LDFLAGS = -lglut -lGL -lGLU
+	LDFLAGS = -lglut -lGL -lGLU -L./ -lfreeimage
 endif
 	
 RM = /bin/rm -f 
 all: main 
-main:  point.o vector.o loadscene.o raytracer.o normal.o camera.o scene.o film.o sampler.o pointlight.o directionallight.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
-	$(CC) $(CFLAGS) -o as2 testing.o loadscene.o raytracer.o camera.o scene.o film.o sphere.o sampler.o pointlight.o directionallight.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
+main:  point.o vector.o light.o loadscene.o raytracer.o normal.o camera.o scene.o film.o sampler.o pointlight.o directionallight.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
+	$(CC) $(CFLAGS) -o as2 testing.o light.o loadscene.o raytracer.o camera.o scene.o film.o sphere.o sampler.o pointlight.o directionallight.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
 vector.o: vector.cpp
 	$(CC) $(CFLAGS) -c vector.cpp -o vector.o
 normal.o: normal.cpp
@@ -45,6 +45,8 @@ film.o: film.cpp
 	$(CC) $(CFLAGS) -c film.cpp -o film.o
 camera.o: camera.cpp
 	$(CC) $(CFLAGS) -c camera.cpp -o camera.o
+light.o: light.cpp
+	$(CC) -c $(CFLAGS) light.cpp -o light.o
 pointlight.o: pointlight.cpp
 	$(CC) $(CFLAGS) -c pointlight.cpp -o pointlight.o
 directionallight.o: directionallight.cpp

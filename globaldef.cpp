@@ -9,5 +9,7 @@ using namespace std;
 Point lookfrom,lookat;
 Vector up;
 vector<Primitive*> prims;
+vector<Shape*> shapes;
+vector<Light*> lights;
 int P_height,P_width;
 float fov;

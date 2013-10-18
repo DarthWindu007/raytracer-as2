@@ -13,7 +13,7 @@
 #include "primitive.h"
 #include "light.h"
 #include "shape.cpp"
-#include "globaldef.cpp"
+
 
 //#include "transform.h"
 #include <math.h>
@@ -30,8 +30,7 @@ class Scene {
   	Sample sample;
   	Ray ray;
   	Color color;
-  	vector<Shape*> shapes;
-  	vector<Light*> lights;
+
   	vector<Primitive*> primitives;
 
     void render();

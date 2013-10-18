@@ -7,7 +7,7 @@
 class Light
 {
 public:
-	void generateLightRay(Localgeo& local, Ray* lray, Color* lcolor);
+	virtual void generateLightRay(Localgeo& local, Ray* lray, Color* lcolor)=0;
 };
 
 

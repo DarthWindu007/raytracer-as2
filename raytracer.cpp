@@ -1,6 +1,8 @@
 #include "algebra3.h"
 #include "vector.h"
 #include "point.h"
+#include "shape.cpp"
+#include "light.h"
 #include "ray.h"
 #include "sample.h"
 #include "raytracer.h"
@@ -11,6 +13,12 @@ using namespace std;
 
 // Raytracer default constructor sets the threshold == 5.
 // And has a camera_pos taken from lookfrom
+Vector operator-(Vector v, Normal v2){
+    return Vector(v.x-v2.x,v.y-v2.y,v.z-v2.z);
+}
+Vector operator+(Vector v, Normal v2){
+    return Vector(v.x+v2.x,v.y+v2.y,v.z+v2.z);
+}
 Raytracer::Raytracer() 
 { 
   this->threshold = 5; 
@@ -24,10 +32,11 @@ Raytracer::Raytracer(int t, Point p)
 void Raytracer::trace(Ray& ray, int depth, Color* color){
   if(depth > this->threshold){
     *color = Color(); // black
+    return;
   }else{
         float thit;
         Localgeo intersection,closestInter;//,closest;
-        //Localgeo closest;
+        //Localgeo first_intersection;
         float minDistance = 99999; // I guess we have to set an abituary value for min distance
         Primitive* closest = 0;
         //transorms
@@ -42,7 +51,7 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                         //float dist = (intersection.pos - eyePos).magnitude();
                         if(thit < minDistance){
                                 minDistance = thit;
-                                //closest = s;
+                                closest = s;
                                 closestInter = intersection;
 
                                 //get transforms of new closest object
@@ -101,19 +110,19 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                 Ray tlray = Ray();
                 Color lcolor = Color();
                 BRDF brdf = BRDF();
-                closest->getBRDF(closest, &brdf);
-                color = brdf.ka;
+                (*closest).getBRDF(closestInter, &brdf);
+                *color = brdf.ka;
 
                 //Reflection info. Need r vector like in specular. Find way to send this to shading?
-                Vector rDir = ray->dir - (closest->normal * (2 * closest->normal * ray->dir ));
-                rDir = rDir->norm();
-                Ray r = Ray(closestInter->pos, rDir, 0.0, ray.t_max);
+                Vector rDir = ray.dir - (closestInter.normal * ((closestInter.normal*ray.dir)*2));
+                rDir = rDir.norm();
+                Ray r = Ray(closestInter.pos, rDir, 0.0, ray.t_max);
                 /////////////////////////////////////////////////////////////////////////////////
 
 
                 for(vector<Light*>::iterator lIter = lights.begin(); lIter != lights.end(); ++ lIter){
                         Light* l = *lIter;
-                        (*l).generateLightRay(closest, &lray, &lcolor);
+                        (*l).generateLightRay(closestInter, &lray, &lcolor);
                         //tlray = lray;
 
                         //check for intersection with primitives for shadows
@@ -165,12 +174,12 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                                 Color refColor = Color();
 
                                 //make recursive call if there is any reflectivity
-                                if(brdf->kr->r != 0 && brdf->kr->g != 0 && brdf->kr->b != 0){
+                                if(brdf.kr.r != 0 && brdf.kr.g != 0 && brdf.kr.b != 0){
 
                                         trace(r, depth+1, &refColor);
                                 }
                                 //calculate Phong stuff
-                                *color = *color + shading(closest, brdf, ray, lray, lcolor) + brdf->kr*refColor;
+                                *color = *color + shading(closestInter, brdf, ray, lray, lcolor) + refColor*brdf.kr;
                                 //*color = Color(1,0,0);
                         }
                 }
@@ -180,17 +189,17 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                 
 
 
-Color RayTracer::shading(Localgeo& point, BRDF brdf, Ray& origRay, Ray& lray, Color lcolor){
+Color Raytracer::shading(Localgeo& point, BRDF brdf, Ray& origRay, Ray& lray, Color lcolor){
         //diffuse component
         //dot product between normal and light vectors
-        float diff = point->normal * (lray->dir);
+        float diff = point.normal * (lray.dir);
 
         //specular component
-        Vector v = origRay->pos - point->pos; //for reflections, eye needs to be point of where first ray came from
-        v = v->normalize();
-        Vector r = (lray->dir * -1) + (point->norm * (2 * diff));
-        r = r->normalize();
+        Vector v = origRay.pos - point.pos; //for reflections, eye needs to be point of where first ray came from
+        v = v.norm();
+        Vector r = (lray.dir * -1) + (point.normal * (2 * diff));
+        r = r.norm();
         float spec = r * v;
 
-        return (lcolor * brdf->kd) * max(diff,0.0f) + (lcolor * brdf.ks) * pow(max(spec,0.0f),brdf->sp);
+        return (lcolor * brdf.kd) * max(diff,0.0f) + (lcolor * brdf.ks) * pow(max(spec,0.0f),brdf.p);
 }

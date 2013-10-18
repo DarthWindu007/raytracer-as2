@@ -14,6 +14,8 @@ public:
 	Normal(Point);
 	Normal operator+(Normal);
 	Normal operator-(Normal);
+	float operator*(Normal);
+	Normal operator*(float);
 };
 
 std::ostream& operator<<(std::ostream&, const Normal&);

@@ -10,10 +10,7 @@
 #define _USE_MATH_DEFINES
 using namespace std;
 
-extern Point lookfrom, lookat;
-extern Vector up;
-extern int P_height,P_width;
-extern float fov;
+
 
 Camera::Camera() 
 { // lookfrom is a Point global variable
