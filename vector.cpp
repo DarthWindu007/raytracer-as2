@@ -10,6 +10,12 @@ Vector::Vector(){
 	this->y=0;
 	this->z=0;
 }
+
+Vector::Vector(vec3 vec){
+	this->x=vec[0];
+	this->y=vec[1];
+	this->z=vec[2];
+}
 Vector::Vector(float nx, float ny, float nz){
 	this->x=nx;
 	this->y=ny;

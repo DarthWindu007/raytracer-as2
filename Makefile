@@ -11,8 +11,8 @@ endif
 	
 RM = /bin/rm -f 
 all: main 
-main:  point.o vector.o normal.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
-	$(CC) $(CFLAGS) -o as2 testing.o sphere.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
+main:  point.o vector.o normal.o camera.o scene.o film.o sampler.o pointlight.o directionallight.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
+	$(CC) $(CFLAGS) -o as2 testing.o camera.o scene.o film.o sphere.o sampler.o pointlight.o directionallight.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
 vector.o: vector.cpp
 	$(CC) $(CFLAGS) -c vector.cpp -o vector.o
 normal.o: normal.cpp
@@ -37,6 +37,18 @@ sphere.o: sphere.cpp
 	$(CC) $(CFLAGS) -c sphere.cpp -o sphere.o
 triangle.o: triangle.cpp
 	$(CC) $(CFLAGS) -c triangle.cpp -o triangle.o
+sampler.o: sampler.cpp
+	$(CC) $(CFLAGS) -c sampler.cpp -o sampler.o
+scene.o: scene.cpp
+	$(CC) $(CFLAGS) -c scene.cpp -o scene.o
+film.o: film.cpp
+	$(CC) $(CFLAGS) -c film.cpp -o film.o
+camera.o: camera.cpp
+	$(CC) $(CFLAGS) -c camera.cpp -o camera.o
+pointlight.o: pointlight.cpp
+	$(CC) $(CFLAGS) -c pointlight.cpp -o pointlight.o
+directionallight.o: directionallight.cpp
+	$(CC) $(CFLAGS) -c directionallight.cpp -o directionallight.o
 testing.o: testing.cpp
 	$(CC) -c $(CFLAGS) testing.cpp -o testing.o
 clean: 

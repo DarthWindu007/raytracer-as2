@@ -1,11 +1,13 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <iostream>
+#include "algebra3.h"
 
 class Vector {
 public:
 	float x,y,z;
 	Vector();
+	Vector(vec3);
 	Vector(float,float,float);
 	Vector operator+(Vector);
 	Vector operator-(Vector);
