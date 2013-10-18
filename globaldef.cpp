@@ -6,8 +6,8 @@
 #include "primitive.h"
 using namespace std;
 
-extern Point lookfrom,lookat;
-extern Vector up;
-extern vector<Primitive*> prims;
-extern int P_height,P_width;
-extern float fov;
+Point lookfrom,lookat;
+Vector up;
+vector<Primitive*> prims;
+int P_height,P_width;
+float fov;

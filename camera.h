@@ -10,6 +10,12 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 
+
+extern Point lookfrom, lookat;
+extern Vector up;
+extern int P_height,P_width;
+extern float fov;
+
 class Camera {
 public:
 	Vector W,U,V;

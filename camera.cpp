@@ -6,18 +6,22 @@
 #include "sample.h"
 #include "camera.h"
 #include <math.h>
-#include "globaldef.cpp"
+
 #define _USE_MATH_DEFINES
 using namespace std;
 
+extern Point lookfrom, lookat;
+extern Vector up;
+extern int P_height,P_width;
+extern float fov;
 
 Camera::Camera() 
 { // lookfrom is a Point global variable
   // lookat is a Point global variable
   // up is a Vector global variable
   // computing vector W, U, V (Camera coordinates)
-  this->pos = lookfrom;
-  this->W = (lookfrom - lookat).norm();
+  this->pos = ::lookfrom;
+  this->W = (::lookfrom - ::lookat).norm();
   vec3 upCW = vec3(up.x,up.y,up.z)^vec3(W.x,W.y,W.z);
   this->U = Vector(upCW).norm();
   vec3 WCU = vec3(W.x,W.y,W.z)^vec3(U.x,U.y,U.z);

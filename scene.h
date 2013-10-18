@@ -33,7 +33,7 @@ class Scene {
   	vector<Shape*> shapes;
   	vector<Light*> lights;
   	vector<Primitive*> primitives;
-    Scene();
+
     void render();
 };
 

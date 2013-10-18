@@ -2,7 +2,15 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include "point.h"
+#include "vector.h"
+//#include ""
+//#include ""
 
+extern Point lookfrom, lookat;
+extern Vector up;
+extern int P_height,P_width;
+extern float fov;
 
 void loadScene(std::string file) {
 
@@ -43,6 +51,8 @@ void loadScene(std::string file) {
       else if(!splitline[0].compare("size")) {
         width = atoi(splitline[1].c_str());
         height = atoi(splitline[2].c_str());
+        P_height = height;
+        P_width = width;
       }
       //maxdepth depth
       //  max # of bounces for ray (default 5)
@@ -62,6 +72,8 @@ void loadScene(std::string file) {
         //    atof(splitline[1].c_str())
         //    atof(splitline[2].c_str())
         //    atof(splitline[3].c_str())
+        float lfx,lfy,lfz;
+        lookfrom = Point(lfx,lfy,lfz);
         // lookat:
         //    atof(splitline[4].c_str())
         //    atof(splitline[5].c_str())

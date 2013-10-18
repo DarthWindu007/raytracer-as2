@@ -11,9 +11,6 @@
 #include <math.h>
 using namespace std;
 
-Scene::Scene()
-{
-}
 
 void Scene::render(){
   Sample sample = Sample(); // start at coordinate x = 0 and y = 0

@@ -26,13 +26,13 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
     *color = Color(); // black
   }else{
         float thit;
-        LocalGeo intersection , closestInter;
-        LocalGeo closest;
+        Localgeo intersection,closestInter;//,closest;
+        //Localgeo closest;
         float minDistance = 99999; // I guess we have to set an abituary value for min distance
         Primitive* closest = 0;
         //transorms
         bool transformed = false;
-        vector<Transform> transforms;
+        vector<Transformation> transforms;
         //loop through all primitives GLOBAL
         for(vector<Primitive*>::iterator iter = prims.begin(); iter != prims.end(); ++iter){
                 Primitive* s = *iter;
@@ -101,13 +101,13 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                 Ray tlray = Ray();
                 Color lcolor = Color();
                 BRDF brdf = BRDF();
-                (*closest)->getBRDF(closest, &brdf);
-                *color = brdf->ka;
+                closest->getBRDF(closest, &brdf);
+                color = brdf.ka;
 
                 //Reflection info. Need r vector like in specular. Find way to send this to shading?
                 Vector rDir = ray->dir - (closest->normal * (2 * closest->normal * ray->dir ));
                 rDir = rDir->norm();
-                Ray r = Ray(closestInter->pos, rDir, 0.0, ray->t_max);
+                Ray r = Ray(closestInter->pos, rDir, 0.0, ray.t_max);
                 /////////////////////////////////////////////////////////////////////////////////
 
 
