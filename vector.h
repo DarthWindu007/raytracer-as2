@@ -16,6 +16,7 @@ public:
 	Vector operator*(float);
 	Vector operator/(float);
 	Vector norm();
+	Vector operator^(Vector);
 };
 
 std::ostream& operator<<(std::ostream&, const Vector&);

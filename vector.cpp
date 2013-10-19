@@ -37,6 +37,11 @@ Vector Vector::operator*(float v2){
 Vector Vector::operator/(float v2){
 	return (*this)*(1.0f/v2);
 }
+Vector Vector::operator^(Vector v){
+	vec3 b = vec3(v.x,v.y,v.z);
+	vec3 a = vec3(this->x,this->y,this->z);
+	return Vector(a^b);
+}
 Vector Vector::norm(){
 	float d = sqrt(pow(this->x,2)+pow(this->y,2)+pow(this->z,2));
 	if(d==0)

@@ -94,6 +94,10 @@ bool Sphere::intersectP(Ray& ray){
         return this->intersect(ray,&thit,&local);
 }
 
+void Sphere::printstuff(){
+
+}
+
 
 
 

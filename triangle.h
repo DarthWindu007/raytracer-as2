@@ -20,6 +20,7 @@ public:
 	vector<Transformation> getTransform();
 	bool intersect(Ray&, float*, Localgeo*);
 	bool intersectP(Ray&);
+	void printstuff();
 };
 
 #endif

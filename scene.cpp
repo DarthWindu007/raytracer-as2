@@ -1,6 +1,6 @@
 #include "sample.h"
 #include "color.h"
-#include "film.h"
+
 #include "sampler.h"
 #include "point.h"
 #include "ray.h"

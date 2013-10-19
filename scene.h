@@ -3,7 +3,7 @@
 #include "sample.h"
 #include "color.h"
 #include "ray.h"
-#include "film.h"
+#include "film.cpp"
 
 #include "sampler.h"
 #include "camera.h"
@@ -27,7 +27,7 @@ public:
   Film film;
 
 
-	vector<Primitive*> primitives;
+	vector<Primitive*> prims;
 
   void loadScene(string);
   void render();

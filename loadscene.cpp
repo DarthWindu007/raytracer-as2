@@ -17,8 +17,6 @@ extern int P_height,P_width;
 extern float fov;
 extern int maxdepth;
 
-extern vector<Light*> lights;
-
 
 
 extern Raytracer raytracer;
@@ -36,7 +34,7 @@ void Scene::loadScene(std::string file) {
   int width, height;
   std::string fname = "output.bmp";
   vector<Transformation> all_trans;
-  vector<Point*> list_vertices;
+  vector<Point> list_vertices;
 
   Color currKA,currKD,currKS,currKR;
   currKA=currKD=currKS=currKR=Color();
@@ -124,7 +122,10 @@ void Scene::loadScene(std::string file) {
         color = Color();
         ray = Ray();
         camera = Camera();
+        maxdepth = 1;
         raytracer = Raytracer(maxdepth,lookfrom);
+        cout << "maxdepth" << maxdepth << endl;
+        film = Film(P_width,P_height,24);
       }
 
       //sphere x y z radius
@@ -143,7 +144,7 @@ void Scene::loadScene(std::string file) {
         sy=atof(splitline[2].c_str());
         sz=atof(splitline[3].c_str());
         sr=atof(splitline[4].c_str());
-        BRDF tempBRDF = BRDF(currKA,currKD,currKS,currKR,currSP,1);
+        BRDF tempBRDF = BRDF(currKA,currKD,currKS,currKR,currSP,0);
 
         Sphere* sphereTemp = new Sphere(sr,Point(sx,sy,sz),&tempBRDF,&all_trans);
         raytracer.prims.push_back(sphereTemp);
@@ -174,7 +175,7 @@ void Scene::loadScene(std::string file) {
         // z: atof(splitline[3].c_str()));
         // Create a new vertex with these 3 values, store in some array
         Point vtemp = Point(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
-        list_vertices.push_back(&vtemp);
+        list_vertices.push_back(vtemp);
       }
       //vertexnormal x y z nx ny nz
       //  Similar to the above, but deﬁne a surface normal with each vertex.
@@ -207,7 +208,7 @@ void Scene::loadScene(std::string file) {
         p2=atof(splitline[2].c_str());
         p3=atof(splitline[3].c_str());
         BRDF tempBRDF = BRDF(currKA,currKD,currKS,currKR,currSP,1);
-        Triangle triTemp = Triangle(*list_vertices[p1],*list_vertices[p2],*list_vertices[p3],&tempBRDF,&all_trans);
+        Triangle triTemp = Triangle(list_vertices[p1],list_vertices[p2],list_vertices[p3],&tempBRDF,&all_trans);
 
         raytracer.prims.push_back(&triTemp);
         //shapes.push_back(&triTemp);
@@ -280,6 +281,17 @@ void Scene::loadScene(std::string file) {
         // g: atof(splitline[5].c_str()),
         // b: atof(splitline[6].c_str()));
         // add light to scene...
+        float dx,dy,dz,dr,dg,db;
+        dx=atof(splitline[1].c_str());
+        dy=atof(splitline[2].c_str());
+        dz=atof(splitline[3].c_str());
+        dr=atof(splitline[4].c_str());
+        dg=atof(splitline[5].c_str());
+        db=atof(splitline[6].c_str());
+        Vector tempdir = Vector(dx,dy,dz);
+        Color tempcol = Color(dr,dg,db);
+        Directionallight* lg = new Directionallight(tempdir,tempcol);
+        raytracer.lights.push_back(lg);
       }
       //point x y z r g b
       //  The location of a point source and the color, as in OpenGL.
@@ -291,6 +303,17 @@ void Scene::loadScene(std::string file) {
         // g: atof(splitline[5].c_str()),
         // b: atof(splitline[6].c_str()));
         // add light to scene...
+        float dx,dy,dz,dr,dg,db;
+        dx=atof(splitline[1].c_str());
+        dy=atof(splitline[2].c_str());
+        dz=atof(splitline[3].c_str());
+        dr=atof(splitline[4].c_str());
+        dg=atof(splitline[5].c_str());
+        db=atof(splitline[6].c_str());
+        Point tempdir = Point(dx,dy,dz);
+        Color tempcol = Color(dr,dg,db);
+        Pointlight* lg = new Pointlight(tempdir,tempcol);
+        raytracer.lights.push_back(lg);
       }
       //attenuation const linear quadratic
       //  Sets the constant, linear and quadratic attenuations 
@@ -307,6 +330,11 @@ void Scene::loadScene(std::string file) {
         // r: atof(splitline[1].c_str())
         // g: atof(splitline[2].c_str())
         // b: atof(splitline[3].c_str())
+        float ar,ag,ab;
+        ar=atof(splitline[1].c_str());
+        ag=atof(splitline[2].c_str());
+        ab=atof(splitline[3].c_str());
+        currKA = Color(ar,ag,ab);
       }
 
       //diﬀuse r g b
@@ -316,6 +344,11 @@ void Scene::loadScene(std::string file) {
         // g: atof(splitline[2].c_str())
         // b: atof(splitline[3].c_str())
         // Update current properties
+        float ar,ag,ab;
+        ar=atof(splitline[1].c_str());
+        ag=atof(splitline[2].c_str());
+        ab=atof(splitline[3].c_str());
+        currKD = Color(ar,ag,ab);
       }
       //specular r g b 
       //  speciﬁes the specular color of the surface.
@@ -324,12 +357,18 @@ void Scene::loadScene(std::string file) {
         // g: atof(splitline[2].c_str())
         // b: atof(splitline[3].c_str())
         // Update current properties
+        float ar,ag,ab;
+        ar=atof(splitline[1].c_str());
+        ag=atof(splitline[2].c_str());
+        ab=atof(splitline[3].c_str());
+        currKS = Color(ar,ag,ab);
       }
       //shininess s
       //  speciﬁes the shininess of the surface.
       else if(!splitline[0].compare("shininess")) {
         // shininess: atof(splitline[1].c_str())
         // Update current properties
+        currSP = atof(splitline[1].c_str());
       }
       //emission r g b
       //  gives the emissive color of the surface.

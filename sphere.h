@@ -23,6 +23,7 @@ public:
 	bool isTransformed();
 	void getBRDF(Localgeo&, BRDF*);
 	vector<Transformation> getTransform();
+	void printstuff();
 };
 
 #endif 

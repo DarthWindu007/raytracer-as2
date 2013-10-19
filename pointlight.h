@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Pointlight : Light {
+class Pointlight : public Light {
 public:
     Point pos;
     Color color;

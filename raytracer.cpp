@@ -6,7 +6,9 @@
 #include "ray.h"
 #include "sample.h"
 #include "raytracer.h"
+#include "triangle.h"
 #include <math.h>
+#include <typeinfo>
 #include "globaldef.cpp"
 #define _USE_MATH_DEFINES
 using namespace std;
@@ -30,29 +32,52 @@ Raytracer::Raytracer(int t, Point p)
 }
 
 void Raytracer::trace(Ray& ray, int depth, Color* color){
+  cout<<"??????????????????????????????????????????" << endl;
   if(depth > this->threshold){
     *color = Color(); // black
+    cout<<"----------------------------------------------------" << endl;
     return;
   }else{
-        float thit;
-        Localgeo intersection,closestInter;//,closest;
-        //Localgeo first_intersection;
-        float minDistance = 99999; // I guess we have to set an abituary value for min distance
-        Primitive* closest = 0;
-        //transorms
-        bool transformed = false;
-        vector<Transformation> transforms;
-        //loop through all primitives GLOBAL
-        for(vector<Primitive*>::iterator iter = prims.begin(); iter != prims.end(); ++iter){
-                Primitive* s = *iter;
-                //if intersection
-                if((*s).intersect(ray, &thit, &intersection)){
-                        //keep track of the closest intersection to the camera, since that is what we will draw
-                        //float dist = (intersection.pos - eyePos).magnitude();
-                        if(thit < minDistance){
-                                minDistance = thit;
-                                closest = s;
-                                closestInter = intersection;
+    float thit;
+    Localgeo intersection,closestInter;//,closest;
+    //Localgeo first_intersection;
+    float minDistance = 99999; // I guess we have to set an abituary value for min distance
+    Primitive* closest = 0;
+    //transorms
+    bool transformed = false;
+    vector<Transformation> transforms;
+    //loop through all primitives GLOBAL
+    cout << "size of prims:  " << prims.size() << endl;
+    cout << prims[0] << endl;
+
+    //for(int ind_i = 0; ind_i < prims.size();ind_i++){
+    for(vector<Primitive*>::iterator iter = prims.begin(); iter != prims.end(); ++iter){
+        Primitive* s = *iter;
+        //cout << "wat?0" << endl;
+        //Primitive** iter = &prims[ind_i];
+        //cout << "wat?0" << endl;
+        //Primitive* s = *iter;
+        //cout << "wat?0" << endl;
+        //if intersection
+        cout << "does intersect?: " << endl;
+
+        vector<Transformation>* v;
+
+        Triangle temptri = Triangle(Point(0,0,0),Point(0,1,0),Point(1,0,0),new BRDF(),v);
+        //temptri.intersect(ray,&thit,&intersection);
+        //(*s).intersect(ray, &thit, &intersection);
+        //cout << "goes past intersect" << endl;
+        cout << typeid(*(prims.front()) ).name() << endl;
+        temptri.printstuff();
+        cout << "goes past intersect" << endl;
+        if((*s).intersect(ray, &thit, &intersection)){
+            cout << "thit:   " << thit << endl;
+            //keep track of the closest intersection to the camera, since that is what we will draw
+            //float dist = (intersection.pos - eyePos).magnitude();
+            if(thit < minDistance){
+                minDistance = thit;
+                closest = s;
+                closestInter = intersection;
 
                                 //get transforms of new closest object
                         /*        if((*s).isTransformed() == true) {
@@ -62,9 +87,9 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                                         transformed = false;
                                 }
                           */      
-                        }
-                }
+            }  
         }
+    }
         //compute shading
         if(minDistance != 99999){
 
@@ -169,7 +194,7 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                                 }
                         }
 
-*/
+*/                      cout << "shadow?:" << isShadow << endl;
                         if(!isShadow){
                                 Color refColor = Color();
 
@@ -180,6 +205,7 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                                 }
                                 //calculate Phong stuff
                                 *color = *color + shading(closestInter, brdf, ray, lray, lcolor) + refColor*brdf.kr;
+                                cout << "shadow and color:" << *color << endl;
                                 //*color = Color(1,0,0);
                         }
                 }

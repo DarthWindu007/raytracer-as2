@@ -7,6 +7,9 @@
 #include "localgeo.h"
 #include "color.h"
 #include "sample.h"
+#include "light.h"
+#include "directionallight.h"
+#include "pointlight.h"
 #include "primitive.h"
 #include "brdf.h"
 #include <math.h>
@@ -20,6 +23,7 @@ public:
 	int threshold;
 	Point camera_pos;
 	vector<Primitive*> prims;
+	vector<Light*> lights;
 	Raytracer();
 	Raytracer(int, Point);
 	void trace(Ray&, int, Color*);

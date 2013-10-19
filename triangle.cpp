@@ -4,6 +4,9 @@
 #include <typeinfo>
 #include "math.h"
 #include "triangle.h"
+
+#include "normal.h"
+
 #include "algebra3.h"
 using namespace std;
 
@@ -47,9 +50,62 @@ float dot(Vector p1, Vector p2){
   return p1.x*p2.x+p1.y*p2.y+p1.z*p2.z;
 }
 
+void Triangle::printstuff(){
+  cout << this->a << " " << this->b << " " << this->c << endl;
+}
+
 
 
 bool Triangle::intersect(Ray& ray, float* thit, Localgeo* local){
+        cout << "goes into triangle intersect" << endl;
+
+        Normal normal = Normal();
+        if(normal*ray.dir==0)
+          return false;
+        float d = normal*this->a;
+        float t = -((normal*ray.pos)+d)/(normal*ray.dir);
+
+        if(t<ray.t_min || t > ray.t_max)
+          return false;
+
+        Point p = ray.pos+(ray.dir*t);
+
+        Vector c;
+
+        Vector h1 = this->b-this->a;
+
+        Vector vp1 = p-this->a;
+
+        c = h1^vp1;
+
+        if(normal*c < 0)
+          return false;
+
+        Vector h2 = this->c-this->b;
+
+        Vector vp2 = p-this->b;
+
+        c = h2^vp2;
+
+        if(normal*c < 0)
+          return false;
+
+        Vector h3 = this->a-this->c;
+
+        Vector vp3 = p-this->c;
+
+        c = h3^vp3;
+
+        if(normal*c < 0)
+          return false;
+
+        *thit = t;
+        *local = Localgeo(p,normal);
+        cout << "stufffffffffffffffffffffffffffffff" << endl;
+        return true;
+
+
+          /*
           float x1,x2,x3,y1,y2,y3,z1,z2,z3,B,A,V,T;
           
            x1 = this->a.x - this->b.x;
@@ -126,7 +182,7 @@ bool Triangle::intersect(Ray& ray, float* thit, Localgeo* local){
            } 
 
            return true;
-
+           */
 
 }
 
@@ -199,6 +255,7 @@ bool Triangle::intersectP(Ray& ray){
             return false;
            }
            return true;
+
              
     
 }

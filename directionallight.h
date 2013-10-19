@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Directionallight : Light {
+class Directionallight : public Light {
 public:
     Vector dir;
     Color color;

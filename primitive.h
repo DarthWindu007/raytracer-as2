@@ -15,6 +15,7 @@ public:
 	virtual void getBRDF(Localgeo&, BRDF*)=0;//{return;};
 	virtual bool isTransformed()=0;//{return false;};
 	virtual vector<Transformation> getTransform()=0;//{vector<Transformation> v;return v;};
+	virtual void printstuff()=0;
 };
 
 #endif
