@@ -12,7 +12,7 @@
 
 #include "primitive.h"
 #include "light.h"
-#include "shape.cpp"
+
 
 
 //#include "transform.h"
@@ -21,19 +21,16 @@
 
 using namespace std;
 
+
 class Scene {
-  public:
-  	Raytracer raytracer;
-  	Film film;
-  	Camera camera;
-  	Sampler sampler;
-  	Sample sample;
-  	Ray ray;
-  	Color color;
+public:
+  Film film;
 
-  	vector<Primitive*> primitives;
 
-    void render();
+	vector<Primitive*> primitives;
+
+  void loadScene(string);
+  void render();
 };
 
 

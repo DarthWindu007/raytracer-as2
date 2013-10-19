@@ -4,6 +4,10 @@
 #include <iostream>
 #include "point.h"
 #include "vector.h"
+#include "sphere.h"
+#include "triangle.h"
+
+#include "scene.h"
 //#include ""
 //#include ""
 
@@ -11,12 +15,32 @@ extern Point lookfrom, lookat;
 extern Vector up;
 extern int P_height,P_width;
 extern float fov;
+extern int maxdepth;
 
-void loadScene(std::string file) {
+extern vector<Light*> lights;
+
+
+
+extern Raytracer raytracer;
+extern Camera camera;
+extern Sampler sampler;
+extern Sample sample;
+extern Ray ray;
+extern Color color;
+
+
+
+void Scene::loadScene(std::string file) {
 
   //store variables and set stuff at the end
   int width, height;
   std::string fname = "output.bmp";
+  vector<Transformation> all_trans;
+  vector<Point*> list_vertices;
+
+  Color currKA,currKD,currKS,currKR;
+  currKA=currKD=currKS=currKR=Color();
+  float currSP = 30.0f;
 
   std::ifstream inpfile(file.c_str());
   if(!inpfile.is_open()) {
@@ -57,7 +81,7 @@ void loadScene(std::string file) {
       //maxdepth depth
       //  max # of bounces for ray (default 5)
       else if(!splitline[0].compare("maxdepth")) {
-        // maxdepth: atoi(splitline[1].c_str())
+        maxdepth =atoi(splitline[1].c_str());
       }
       //output filename
       //  output file to write image to 
@@ -73,16 +97,34 @@ void loadScene(std::string file) {
         //    atof(splitline[2].c_str())
         //    atof(splitline[3].c_str())
         float lfx,lfy,lfz;
+        lfx=atof(splitline[1].c_str());
+        lfy=atof(splitline[2].c_str());
+        lfz=atof(splitline[3].c_str());
         lookfrom = Point(lfx,lfy,lfz);
         // lookat:
         //    atof(splitline[4].c_str())
         //    atof(splitline[5].c_str())
         //    atof(splitline[6].c_str())
+        float lax,lay,laz;
+        lax=atof(splitline[4].c_str());
+        lay=atof(splitline[5].c_str());
+        laz=atof(splitline[6].c_str());
+        lookat = Point(lax,lay,laz);
         // up:
         //    atof(splitline[7].c_str())
         //    atof(splitline[8].c_str())
         //    atof(splitline[9].c_str())
+        float upx,upy,upz;
+        upx=atof(splitline[7].c_str());
+        upy=atof(splitline[8].c_str());
+        upz=atof(splitline[9].c_str());
+        up = Vector(upx,upy,upz);
         // fov: atof(splitline[10].c_str());
+        fov = atof(splitline[10].c_str());
+        color = Color();
+        ray = Ray();
+        camera = Camera();
+        raytracer = Raytracer(maxdepth,lookfrom);
       }
 
       //sphere x y z radius
@@ -96,6 +138,18 @@ void loadScene(std::string file) {
         //   Store 4 numbers
         //   Store current property values
         //   Store current top of matrix stack
+        float sx,sy,sz,sr;
+        sx=atof(splitline[1].c_str());
+        sy=atof(splitline[2].c_str());
+        sz=atof(splitline[3].c_str());
+        sr=atof(splitline[4].c_str());
+        BRDF tempBRDF = BRDF(currKA,currKD,currKS,currKR,currSP,1);
+
+        Sphere* sphereTemp = new Sphere(sr,Point(sx,sy,sz),&tempBRDF,&all_trans);
+        raytracer.prims.push_back(sphereTemp);
+        //Sphere sphereTemp = Sphere(sr,Point(sx,sy,sz));
+
+        //shapes.push_back(sphereTemp);
       }
       //maxverts number
       //  Deﬁnes a maximum number of vertices for later triangle speciﬁcations. 
@@ -119,6 +173,8 @@ void loadScene(std::string file) {
         // y: atof(splitline[2].c_str()),
         // z: atof(splitline[3].c_str()));
         // Create a new vertex with these 3 values, store in some array
+        Point vtemp = Point(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
+        list_vertices.push_back(&vtemp);
       }
       //vertexnormal x y z nx ny nz
       //  Similar to the above, but deﬁne a surface normal with each vertex.
@@ -146,6 +202,15 @@ void loadScene(std::string file) {
         //   Store 3 integers to index into array
         //   Store current property values
         //   Store current top of matrix stack
+        float p1,p2,p3;
+        p1=atof(splitline[1].c_str());
+        p2=atof(splitline[2].c_str());
+        p3=atof(splitline[3].c_str());
+        BRDF tempBRDF = BRDF(currKA,currKD,currKS,currKR,currSP,1);
+        Triangle triTemp = Triangle(*list_vertices[p1],*list_vertices[p2],*list_vertices[p3],&tempBRDF,&all_trans);
+
+        raytracer.prims.push_back(&triTemp);
+        //shapes.push_back(&triTemp);
       }
       //trinormal v1 v2 v3
       //  Same as above but for vertices speciﬁed with normals.

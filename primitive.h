@@ -9,12 +9,12 @@ using namespace std;
 
 class Primitive {
 public:
-	virtual bool intersect(Ray&, float*, Localgeo*);
-	virtual bool intersectP(Ray&);
-	virtual void getBRDF(Localgeo&, BRDF*);
-
-	virtual bool isTransformed();
-	virtual vector<Transformation> getTrans();
+	//explicit
+	virtual bool intersect(Ray&, float*, Localgeo*)=0;//{return false;};
+	virtual bool intersectP(Ray&)=0;//{return false;};
+	virtual void getBRDF(Localgeo&, BRDF*)=0;//{return;};
+	virtual bool isTransformed()=0;//{return false;};
+	virtual vector<Transformation> getTransform()=0;//{vector<Transformation> v;return v;};
 };
 
 #endif

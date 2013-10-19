@@ -11,8 +11,8 @@ endif
 	
 RM = /bin/rm -f 
 all: main 
-main:  point.o vector.o light.o loadscene.o raytracer.o normal.o camera.o scene.o film.o sampler.o pointlight.o directionallight.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
-	$(CC) $(CFLAGS) -o as2 testing.o light.o loadscene.o raytracer.o camera.o scene.o film.o sphere.o sampler.o pointlight.o directionallight.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
+main:  point.o vector.o light.o loadscene.o raytracer.o normal.o camera.o scene.o film.o sampler.o pointlight.o directionallight.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o
+	$(CC) $(CFLAGS) -o as2 light.o loadscene.o raytracer.o camera.o scene.o film.o sphere.o sampler.o pointlight.o directionallight.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
 vector.o: vector.cpp
 	$(CC) $(CFLAGS) -c vector.cpp -o vector.o
 normal.o: normal.cpp
@@ -55,8 +55,8 @@ raytracer.o: raytracer.cpp
 	$(CC) -c $(CFLAGS) raytracer.cpp -o raytracer.o
 loadscene.o: loadscene.cpp
 	$(CC) -c $(CFLAGS) loadscene.cpp -o loadscene.o
-testing.o: testing.cpp
-	$(CC) -c $(CFLAGS) testing.cpp -o testing.o
+#testing.o: testing.cpp
+#	$(CC) -c $(CFLAGS) testing.cpp -o testing.o
 clean: 
 	$(RM) *.o as2
  

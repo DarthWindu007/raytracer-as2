@@ -1,7 +1,7 @@
 #include "algebra3.h"
 #include "vector.h"
 #include "point.h"
-#include "shape.cpp"
+
 #include "light.h"
 #include "ray.h"
 #include "sample.h"

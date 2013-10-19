@@ -7,15 +7,19 @@
 #include "localgeo.h"
 #include "color.h"
 #include "sample.h"
+#include "primitive.h"
 #include "brdf.h"
 #include <math.h>
 #define _USE_MATH_DEFINES
 using namespace std;
 
+
+
 class Raytracer{
 public:
 	int threshold;
 	Point camera_pos;
+	vector<Primitive*> prims;
 	Raytracer();
 	Raytracer(int, Point);
 	void trace(Ray&, int, Color*);

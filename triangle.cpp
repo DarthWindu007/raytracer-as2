@@ -16,11 +16,23 @@ using namespace std;
 // b = 2d.(e-c)
 // c = (e−c)·(e−c)−R^2 
 
-Triangle::Triangle(Point p1, Point p2, Point p3){
-     a = p1;
-     b = p2;
-     c = p3;
+Triangle::Triangle(Point p1, Point p2, Point p3,BRDF* tcol,vector<Transformation>* tr){
+     this->a = p1;
+     this->b = p2;
+     this->c = p3;
+     this->brdf = tcol;
+     this->transformations = tr;
+}
 
+bool Triangle::isTransformed(){
+  return (this->transformations)->size()!=0;
+}
+
+void Triangle::getBRDF(Localgeo& loc, BRDF* brdf){
+     brdf = this->brdf;
+}
+vector<Transformation> Triangle::getTransform(){
+  return *(this->transformations);
 }
 
 float dot(Point p1, Point p2){

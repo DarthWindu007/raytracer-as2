@@ -2,14 +2,22 @@
 #define TRIANGLE_H
 #include "ray.h"
 #include "localgeo.h"
-#include "shape.cpp"
+#include "primitive.h"
 #include "point.h"
 
-class Triangle : public Shape{
+#include "brdf.h"       //
+#include <vector>         //
+#include "transformation.h" //
+class Triangle : public Primitive{
 public:
 	Point a,b,c;
-	Triangle(Point,Point,Point);
+	BRDF* brdf;
+	vector<Transformation>* transformations;
+	Triangle(Point,Point,Point,BRDF*,vector<Transformation>*);
 	//Point(float,Point);
+	bool isTransformed();
+	void getBRDF(Localgeo&, BRDF*);
+	vector<Transformation> getTransform();
 	bool intersect(Ray&, float*, Localgeo*);
 	bool intersectP(Ray&);
 };

@@ -7,10 +7,25 @@
 #include "camera.h"
 #include "raytracer.h"
 #include "scene.h"
+
 //#include "transform.h"
 #include <math.h>
 using namespace std;
 
+extern Point lookfrom, lookat;
+extern Vector up;
+extern int P_height,P_width;
+extern float fov;
+extern int maxdepth;
+
+extern vector<Light*> lights;
+
+extern Raytracer raytracer;
+extern Camera camera;
+extern Sampler sampler;
+extern Sample sample;
+extern Ray ray;
+extern Color color;
 
 void Scene::render(){
   Sample sample = Sample(); // start at coordinate x = 0 and y = 0
@@ -310,3 +325,11 @@ void Scene::loadScene(std::string file) {
     inpfile.close();
   }
 } */
+
+
+int main(int argc, char *argv[]){
+  Scene s;
+  s.loadScene(string(argv[1]));
+  s.render();
+  return 0;
+}
