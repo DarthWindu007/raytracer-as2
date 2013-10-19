@@ -21,6 +21,8 @@ int P_height,P_width;
 float fov;
 int maxdepth;
 
+float currentX, currentY = 0.5f;
+
 Raytracer raytracer;
 
 Camera camera;

@@ -37,7 +37,7 @@ inline void Film::commit(Sample& s, Color& c){
         filmColor.rgbRed = min((c.r * 255.0f), 255.0f);
         filmColor.rgbGreen = min((c.g * 255.0f), 255.0f);
         filmColor.rgbBlue = min((c.b * 255.0f), 255.0f);
-        cout << c << endl;
+        //cout << c << endl;
         FreeImage_SetPixelColor(bitmap, (unsigned int)s.x, (unsigned int)s.y, &filmColor);
 }
 

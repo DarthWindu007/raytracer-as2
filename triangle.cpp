@@ -57,8 +57,8 @@ void Triangle::printstuff(){
 
 
 bool Triangle::intersect(Ray& ray, float* thit, Localgeo* local){
-        cout << "goes into triangle intersect" << endl;
-
+        //cout << "goes into triangle intersect" << endl;
+        /*
         Normal normal = Normal();
         if(normal*ray.dir==0)
           return false;
@@ -105,7 +105,8 @@ bool Triangle::intersect(Ray& ray, float* thit, Localgeo* local){
         return true;
 
 
-          /*
+          */
+
           float x1,x2,x3,y1,y2,y3,z1,z2,z3,B,A,V,T;
           
            x1 = this->a.x - this->b.x;
@@ -182,7 +183,7 @@ bool Triangle::intersect(Ray& ray, float* thit, Localgeo* local){
            } 
 
            return true;
-           */
+           
 
 }
 

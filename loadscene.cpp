@@ -208,9 +208,9 @@ void Scene::loadScene(std::string file) {
         p2=atof(splitline[2].c_str());
         p3=atof(splitline[3].c_str());
         BRDF tempBRDF = BRDF(currKA,currKD,currKS,currKR,currSP,1);
-        Triangle triTemp = Triangle(list_vertices[p1],list_vertices[p2],list_vertices[p3],&tempBRDF,&all_trans);
+        Triangle* triTemp = new Triangle(list_vertices[p1],list_vertices[p2],list_vertices[p3],&tempBRDF,&all_trans);
 
-        raytracer.prims.push_back(&triTemp);
+        raytracer.prims.push_back(triTemp);
         //shapes.push_back(&triTemp);
       }
       //trinormal v1 v2 v3

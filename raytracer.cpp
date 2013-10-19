@@ -32,7 +32,7 @@ Raytracer::Raytracer(int t, Point p)
 }
 
 void Raytracer::trace(Ray& ray, int depth, Color* color){
-  cout<<"??????????????????????????????????????????" << endl;
+  //cout<<"??????????????????????????????????????????" << endl;
   if(depth > this->threshold){
     *color = Color(); // black
     cout<<"----------------------------------------------------" << endl;
@@ -47,8 +47,8 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
     bool transformed = false;
     vector<Transformation> transforms;
     //loop through all primitives GLOBAL
-    cout << "size of prims:  " << prims.size() << endl;
-    cout << prims[0] << endl;
+    //cout << "size of prims:  " << prims.size() << endl;
+    //cout << prims[0] << endl;
 
     //for(int ind_i = 0; ind_i < prims.size();ind_i++){
     for(vector<Primitive*>::iterator iter = prims.begin(); iter != prims.end(); ++iter){
@@ -59,19 +59,20 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
         //Primitive* s = *iter;
         //cout << "wat?0" << endl;
         //if intersection
-        cout << "does intersect?: " << endl;
+        //cout << "does intersect?: " << endl;
 
         vector<Transformation>* v;
 
-        Triangle temptri = Triangle(Point(0,0,0),Point(0,1,0),Point(1,0,0),new BRDF(),v);
+        //Triangle temptri = Triangle(Point(0,0,0),Point(0,1,0),Point(1,0,0),new BRDF(),v);
         //temptri.intersect(ray,&thit,&intersection);
-        //(*s).intersect(ray, &thit, &intersection);
+        bool stuff = (*s).intersect(ray, &thit, &intersection);
+        //cout << stuff << endl;
         //cout << "goes past intersect" << endl;
-        cout << typeid(*(prims.front()) ).name() << endl;
-        temptri.printstuff();
-        cout << "goes past intersect" << endl;
-        if((*s).intersect(ray, &thit, &intersection)){
-            cout << "thit:   " << thit << endl;
+        //cout << typeid(s).name() << endl;
+        //temptri.printstuff();
+        //cout << "goes past intersect" << endl;
+        if(stuff){
+            //cout << "thit:   " << thit << endl;
             //keep track of the closest intersection to the camera, since that is what we will draw
             //float dist = (intersection.pos - eyePos).magnitude();
             if(thit < minDistance){
@@ -137,6 +138,7 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                 BRDF brdf = BRDF();
                 (*closest).getBRDF(closestInter, &brdf);
                 *color = brdf.ka;
+                //cout << *color << endl;
 
                 //Reflection info. Need r vector like in specular. Find way to send this to shading?
                 Vector rDir = ray.dir - (closestInter.normal * ((closestInter.normal*ray.dir)*2));
@@ -147,18 +149,20 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
 
                 for(vector<Light*>::iterator lIter = lights.begin(); lIter != lights.end(); ++ lIter){
                         Light* l = *lIter;
+                        cout << "first" << lcolor << endl;
                         (*l).generateLightRay(closestInter, &lray, &lcolor);
+                        cout << "second" << lcolor << endl;
                         //tlray = lray;
 
                         //check for intersection with primitives for shadows
                         bool isShadow = false;
-                        for(vector<Primitive*>::iterator iter = prims.begin(); iter != prims.end(); ++iter){
+                        /*for(vector<Primitive*>::iterator iter = prims.begin(); iter != prims.end(); ++iter){
                                 Primitive* s = *iter;
                                 if((*s).intersectP(lray)){
                                         isShadow = true;
                                         break;
                                 }
-                        }
+                        }*/
 /*
                         if(transformed == true){
                                 for (int i = 0 ; i < transforms.size(); i++)
@@ -194,8 +198,9 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                                 }
                         }
 
-*/                      cout << "shadow?:" << isShadow << endl;
+*/                      //cout << "shadow?:" << isShadow << endl;
                         if(!isShadow){
+                            cout << "check shadow..................................." << endl;
                                 Color refColor = Color();
 
                                 //make recursive call if there is any reflectivity
@@ -205,12 +210,13 @@ void Raytracer::trace(Ray& ray, int depth, Color* color){
                                 }
                                 //calculate Phong stuff
                                 *color = *color + shading(closestInter, brdf, ray, lray, lcolor) + refColor*brdf.kr;
-                                cout << "shadow and color:" << *color << endl;
+                                //cout << "shadow and color:" << *color << endl;
                                 //*color = Color(1,0,0);
                         }
                 }
               }
             }
+            //cout << *color << endl;
           }
                 
 

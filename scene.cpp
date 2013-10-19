@@ -32,6 +32,7 @@ void Scene::render(){
   Ray ray = Ray();          // ray 
   while(sampler.getSample(&sample)){ // iterate through the sample pixel
           color = Color();
+          //cout << "" << endl;
           camera.generateRay(sample, &ray);
           raytracer.trace(ray, 1, &color); // depth is 1
           film.commit(sample, color);
