@@ -10,14 +10,14 @@ BRDF::BRDF(){
 	this->kd=Color();
 	this->ks=Color();
 	this->kr=Color();
-	this->p=1;
-	this->n=0;
+	this->sp=1;
+	this->em=Color();
 }
-BRDF::BRDF(Color a,Color b, Color c,Color d,float p,float n){
+BRDF::BRDF(Color a,Color b, Color c,Color d,Color e,float p){
     this->ka = a;
     this->kd = b;
     this->ks = c;
     this->kr = d;
-    this->p=p;
-    this->n=n; 
+    this->sp=p;
+    this->em=e; 
 }

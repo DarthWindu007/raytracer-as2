@@ -3,6 +3,7 @@
 #include <iostream>
 #include <typeinfo>
 #include "math.h"
+
 using namespace std;
 
 Vector::Vector(){
@@ -10,10 +11,21 @@ Vector::Vector(){
 	this->y=0;
 	this->z=0;
 }
+Vector::Vector(vec3 v){
+	this->x=v[0];
+	this->y=v[1];
+	this->z=v[2];
+}
 Vector::Vector(float nx, float ny, float nz){
 	this->x=nx;
 	this->y=ny;
 	this->z=nz;  
+}
+
+Vector Vector::operator^(Vector v){
+	vec3 b = vec3(v.x,v.y,v.z);
+	vec3 a = vec3(this->x,this->y,this->z);
+	return Vector(a^b);
 }
 
 Vector Vector::operator+(Vector v2){
@@ -21,6 +33,9 @@ Vector Vector::operator+(Vector v2){
 }
 Vector Vector::operator-(Vector v2){
 	return (*this)+(v2*-1.0f); // is the same as this.operator+(v2*-1.0f);
+}
+float Vector::operator*(Vector v2){
+	return (v2.x*this->x + v2.y*this->y + v2.z*this->z);
 }
 Vector Vector::operator*(float v2){
 	return Vector(v2*this->x,v2*this->y,v2*this->z);

@@ -23,6 +23,13 @@ Sphere::Sphere(float r, Point c){ //, Color coloring){
 
 }
 
+Sphere::Sphere(float r, Point c, Matrix mat, BRDF col){
+  radius = r;
+  center = c;
+  transform = mat;
+  brdf = col;
+}
+
 float Sphere::dot(Point p1, Point p2){
 	return p1.x*p2.x+p1.y*p2.y+p1.z*p2.z;
 }

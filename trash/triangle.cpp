@@ -23,6 +23,14 @@ Triangle::Triangle(Point p1, Point p2, Point p3){
 
 }
 
+Triangle::Triangle(Point p1, Point p2, Point p3, Matrix mat, BRDF col){
+     a = p1;
+     b = p2;
+     c = p3;
+     transform = mat;
+     brdf = col;
+}
+
 float dot(Point p1, Point p2){
   return p1.x*p2.x+p1.y*p2.y+p1.z*p2.z;
 }

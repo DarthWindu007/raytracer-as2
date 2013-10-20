@@ -20,8 +20,8 @@ public:
 	 Ray operator*(Ray);
 	 Localgeo operator*(Localgeo);
 
-	 Transformation trans();
-	 Transformation inv();
+	 Transformation transpose();
+	 Transformation inverse();
 	 Transformation identityTrans();
 };
 

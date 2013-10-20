@@ -116,10 +116,10 @@ friend vec3 operator ^ (const vec2& a, const vec2& b);	    // cross product
 friend int operator == (const vec2& a, const vec2& b);	    // v1 == v2 ?
 friend int operator != (const vec2& a, const vec2& b);	    // v1 != v2 ?
 
-#ifdef ALGEBRA3IOSTREAMS
+//#ifdef ALGEBRA3IOSTREAMS
 friend ostream& operator << (ostream& s, const vec2& v);	// output to stream
 friend istream& operator >> (istream& s, vec2& v);	    // input from strm.
-#endif ALGEBRA3IOSTREAMS
+//#endif ALGEBRA3IOSTREAMS
 
 friend void swap(vec2& a, vec2& b);						// swap v1 & v2
 friend vec2 min(const vec2& a, const vec2& b);		    // min(v1, v2)

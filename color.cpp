@@ -23,6 +23,9 @@ Color Color::operator+(Color n2){
 Color Color::operator-(Color n2){
     return Color(this->r - n2.r,this->g - n2.g,this->b - n2.b);
 }
+Color Color::operator*(Color n2){
+    return Color(this->r * n2.r,this->g * n2.g,this->b * n2.b);
+}
 Color Color::operator*(float scalar){
     return Color(this->r * scalar,this->g * scalar,this->b * scalar);
 }

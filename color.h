@@ -9,6 +9,7 @@ public:
 	Color(float,float,float);
 	Color operator+(Color);
 	Color operator-(Color);
+	Color operator*(Color);
 	Color operator*(float);
 	Color operator/(float);
 };

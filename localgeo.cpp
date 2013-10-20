@@ -9,10 +9,12 @@ using namespace std;
 Localgeo::Localgeo(){
 	this->pos=Point();
 	this->normal=Normal();
+	isDefined=false;
 }
 Localgeo::Localgeo(Point p, Normal nom){
    this->pos = p;
-   this->normal = nom; 
+   this->normal = nom;
+   this->isDefined = true;
 }
 
 

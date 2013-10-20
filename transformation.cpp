@@ -9,11 +9,11 @@ using namespace std;
 
 Transformation::Transformation(){
 	this->m=Matrix::identityMat();
-	this->minvt=m.inv();
+	this->minvt=m.inverse();
 }
 Transformation::Transformation(Matrix mat){
 	this->m = mat;
-	this->minvt = mat.inv();;
+	this->minvt = mat.inverse();
 }
 
  Point Transformation::operator*(Point p){
@@ -29,17 +29,17 @@ Transformation::Transformation(Matrix mat){
  	return Normal(temp[0],temp[1],temp[2]);
  }
  Ray Transformation::operator*(Ray r){
- 	return Ray((*this)*r.pos,(*this)*r.dir,r.t_min,r.t_max);
+ 	return Ray((*this)*r.pos,(*this)*r.dir);
  }
  Localgeo Transformation::operator*(Localgeo lg){
  	return Localgeo((*this)*lg.pos,(*this)*lg.normal);
  }
 
- Transformation Transformation::inv(){
+ Transformation Transformation::inverse(){
  	return Transformation(this->minvt);
  }
- Transformation Transformation::trans(){
- 	return Transformation(this->m.trans());
+ Transformation Transformation::transpose(){
+ 	return Transformation(this->m.transpose());
  }
  Transformation Transformation::identityTrans(){
  	return Transformation();

@@ -4,9 +4,10 @@
 class BRDF {
 public:
 	Color kd,ks,ka,kr;
-	float p,n;
+	Color em;
+	float sp;
 	BRDF();
-	BRDF(Color,Color,Color,Color,float,float);
+	BRDF(Color,Color,Color,Color,Color,float);
 };
 
 #endif

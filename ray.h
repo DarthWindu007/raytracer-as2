@@ -9,7 +9,7 @@ public:
     float t_min;
     float t_max;
     Ray();
-    Ray(Point , Vector , float ,float );
+    Ray(Point,Vector);
     float rayGetT(Point);
     Point rayPos(float);
 };

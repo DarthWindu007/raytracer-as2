@@ -16,14 +16,27 @@ Matrix::Matrix(mat4 m){
 }
 
 Matrix Matrix::operator+(Matrix m ){
-	return this->mat+m.mat;
+	return Matrix(this->mat+m.mat);
 }
 Matrix Matrix::operator-(Matrix m){
-	return this->mat-m.mat;
+	return Matrix(this->mat-m.mat);
 }
 Matrix Matrix::operator*(Matrix m){
-	return this->mat*m.mat;
+	return Matrix(this->mat*m.mat);
 }
+Vector Matrix::operator*(Vector v){
+	vec4 temp = this->mat*vec4(v.x,v.y,v.z,0);
+	return Vector(temp[0],temp[1],temp[2]);
+}
+Normal Matrix::operator*(Normal n){
+	vec4 temp = this->mat*vec4(n.x,n.y,n.z,0);
+	return Normal(temp[0],temp[1],temp[2]);
+}
+Point Matrix::operator*(Point n){
+	vec4 temp = this->mat*vec4(n.x,n.y,n.z,0);
+	return Point(temp[0],temp[1],temp[2]);
+}
+
 Matrix Matrix::transMat(float x,float y,float z){
 	return Matrix(translation3D(vec3(x,y,z)));
 }
@@ -66,10 +79,10 @@ Matrix Matrix::identityMat(){
 	return Matrix(identity3D());
 }
 
-Matrix Matrix::inv(){
+Matrix Matrix::inverse(){
 	return mat.inverse();
 }
-Matrix Matrix::trans(){
+Matrix Matrix::transpose(){
 	return mat.transpose();
 }
 

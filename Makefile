@@ -6,13 +6,13 @@ ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
     	-lGL -lGLU -lm -lstdc++
 else
 	CFLAGS = -g -DGL_GLEXT_PROTOTYPES -Iglut-3.7.6-bin
-	LDFLAGS = -lglut -lGL -lGLU
+	LDFLAGS = -lglut -lGL -lGLU -L./ -lfreeimage
 endif
 	
 RM = /bin/rm -f 
 all: main 
-main:  point.o vector.o normal.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o sphere.o triangle.o testing.o
-	$(CC) $(CFLAGS) -o as2 testing.o sphere.o triangle.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o $(LDFLAGS) 
+main:  camera.o light.o raytracer.o directionallight.o pointlight.o point.o vector.o normal.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o main.o
+	$(CC) $(CFLAGS) -o as2 camera.o light.o raytracer.o directionallight.o pointlight.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o main.o $(LDFLAGS) 
 vector.o: vector.cpp
 	$(CC) $(CFLAGS) -c vector.cpp -o vector.o
 normal.o: normal.cpp
@@ -33,12 +33,24 @@ matrix.o: matrix.cpp
 	$(CC) $(CFLAGS) -c matrix.cpp -o matrix.o
 transformation.o: transformation.cpp
 	$(CC) $(CFLAGS) -c transformation.cpp -o transformation.o
-sphere.o: sphere.cpp
-	$(CC) $(CFLAGS) -c sphere.cpp -o sphere.o
-triangle.o: triangle.cpp
-	$(CC) $(CFLAGS) -c triangle.cpp -o triangle.o
-testing.o: testing.cpp
-	$(CC) -c $(CFLAGS) testing.cpp -o testing.o
+#sphere.o: sphere.cpp
+#	$(CC) $(CFLAGS) -c sphere.cpp -o sphere.o
+#triangle.o: triangle.cpp
+#	$(CC) $(CFLAGS) -c triangle.cpp -o triangle.o
+camera.o: camera.cpp
+	$(CC) $(CFLAGS) -c camera.cpp -o camera.o
+light.o: light.cpp
+	$(CC) $(CFLAGS) -c light.cpp -o light.o
+raytracer.o: raytracer.cpp
+	$(CC) $(CFLAGS) -c raytracer.cpp -o raytracer.o
+directionallight.o: directionallight.cpp
+	$(CC) $(CFLAGS) -c directionallight.cpp -o directionallight.o
+pointlight.o: pointlight.cpp
+	$(CC) $(CFLAGS) -c pointlight.cpp -o pointlight.o
+main.o: main.cpp
+	$(CC) $(CFLAGS) -c main.cpp -o main.o
+#testing.o: testing.cpp
+#	$(CC) -c $(CFLAGS) testing.cpp -o testing.o
 clean: 
 	$(RM) *.o as2
  

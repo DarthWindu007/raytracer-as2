@@ -12,6 +12,7 @@ public:
 	//Point(float,Point);
 	Sphere();
 	Sphere(float,Point);
+	Sphere(float,Point,Matrix,BRDF);
 	float dot(Point,Point);
 	float dot(Vector,Point);
 	float dot(Vector,Vector);
