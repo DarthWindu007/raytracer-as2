@@ -4,6 +4,7 @@
 #include <typeinfo>
 #include "math.h"
 
+
 using namespace std;
 
 Ray::Ray(){
@@ -21,6 +22,10 @@ Point Ray::rayPos(float time){
 	return pos+dir*time;
 }
 
+Vector Ray::getReflection(Normal norm){
+	//float normD = norm.x*norm.x+norm.y*norm.y+norm.z*norm.z;
+	//return Vector(this->dir+2*norm*(normal*-1*this->dir)/normD);
+}
 float Ray::rayGetT(Point point){
 	Vector v = point -this->pos;
 	vec3 direction = vec3(dir.x,dir.y,dir.z);

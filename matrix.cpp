@@ -29,11 +29,11 @@ Vector Matrix::operator*(Vector v){
 	return Vector(temp[0],temp[1],temp[2]);
 }
 Normal Matrix::operator*(Normal n){
-	vec4 temp = this->mat*vec4(n.x,n.y,n.z,0);
+	vec4 temp = this->mat*vec4(n.x,n.y,n.z,1);
 	return Normal(temp[0],temp[1],temp[2]);
 }
 Point Matrix::operator*(Point n){
-	vec4 temp = this->mat*vec4(n.x,n.y,n.z,0);
+	vec4 temp = this->mat*vec4(n.x,n.y,n.z,1);
 	return Point(temp[0],temp[1],temp[2]);
 }
 

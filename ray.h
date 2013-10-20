@@ -2,6 +2,7 @@
 #define RAY_H
 #include "vector.h"
 #include "point.h"
+#include "normal.h"
 class Ray {
 public:
     Point pos;
@@ -12,6 +13,7 @@ public:
     Ray(Point,Vector);
     float rayGetT(Point);
     Point rayPos(float);
+    Vector getReflection(Normal);
 };
 
 #endif

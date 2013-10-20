@@ -29,6 +29,8 @@ localgeo.o: localgeo.cpp
 	$(CC) $(CFLAGS) -c localgeo.cpp -o localgeo.o
 sample.o: sample.cpp
 	$(CC) $(CFLAGS) -c sample.cpp -o sample.o
+#shape.o: shape.cpp
+#	$(CC) $(CFLAGS) -c shape.cpp -o shape.o
 matrix.o: matrix.cpp
 	$(CC) $(CFLAGS) -c matrix.cpp -o matrix.o
 transformation.o: transformation.cpp

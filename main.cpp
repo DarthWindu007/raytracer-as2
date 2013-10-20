@@ -19,10 +19,11 @@
 
 int maxdepth = 5;
 int pixelwidth, pixelheight;
-std::string fname = "output.bmp";
+std::string fname = "output.png";
 
 std::vector<Shape> shapes;
 std::vector<Light> lights;
+std::vector<Triangle> triangles;
 
 std::vector<Point> vertices;
 
@@ -109,6 +110,8 @@ void loadScene(std::string file) {
 
 
 
+
+
       }
 
       //sphere x y z radius
@@ -130,6 +133,15 @@ void loadScene(std::string file) {
       	BRDF newcol = BRDF(currKa,currKd,currKs,currKr,currEm,currSp);
       	Sphere newS = Sphere(rad,cen,newtrans,newcol);
       	shapes.push_back(newS);
+      	shapes.back().radius = rad;
+        shapes.back().center = cen;
+
+        //cout << shapes.back().radius << endl;
+
+        //cout << shapes.back().center << endl;
+
+        //shapes.back().c = vertices[atof(splitline[3].c_str())];
+      	//cout <<"isihgirthjgstrhgiu" << endl;
       }
       //maxverts number
       //  Deï¬nes a maximum number of vertices for later triangle speciï¬cations. 
@@ -191,8 +203,26 @@ void loadScene(std::string file) {
       	newtrans = newtrans.identityMat();
       	BRDF newcol = BRDF(currKa,currKd,currKs,currKr,currEm,currSp);
         Triangle newTri = Triangle(p1,p2,p3,newtrans,newcol);
-
+       //cout<<newTri.a<<endl;
         shapes.push_back(newTri);
+        shapes.back().a = vertices[atof(splitline[1].c_str())];
+        shapes.back().b = vertices[atof(splitline[2].c_str())];
+        shapes.back().c = vertices[atof(splitline[3].c_str())];
+        
+        /*cout << shapes[0].a<< endl;
+        cout << shapes[0].b<< endl;
+        cout << shapes[0].c<< endl;
+        cout << shapes[0].brdf.ka<< endl;
+        cout << shapes[0].brdf.kd<< endl;
+        cout << shapes[0].brdf.ks<< endl;
+        cout << shapes[0].brdf.kr<< endl;
+        cout << shapes[0].brdf.em<< endl;
+        cout << shapes[0].brdf.sp<< endl;
+        cout << shapes[0].transform<<endl;
+        */
+
+        
+
       }
       //trinormal v1 v2 v3
       //  Same as above but for vertices speciï¬ed with normals.
@@ -264,7 +294,7 @@ void loadScene(std::string file) {
         // b: atof(splitline[6].c_str()));
         // add light to scene...
         Vector vec = Vector(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
-      	Color lcol = Color(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
+      	Color lcol = Color(atof(splitline[4].c_str()),atof(splitline[5].c_str()),atof(splitline[6].c_str()));
 
       	Directionallight dl = Directionallight(vec,lcol);
 
@@ -282,7 +312,7 @@ void loadScene(std::string file) {
         // b: atof(splitline[6].c_str()));
         // add light to scene...
         Point vec = Point(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
-      	Color lcol = Color(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
+      	Color lcol = Color(atof(splitline[4].c_str()),atof(splitline[5].c_str()),atof(splitline[6].c_str()));
 
       	Pointlight dl = Pointlight(vec,lcol);
 
@@ -354,7 +384,7 @@ int main(int args, char* argv[]){
 	char* filename = argv[1];
 	
 	loadScene(filename);
-
+	//exit(1);
 	Camera camera = Camera(lookfrom,lookat,up,fov,pixelwidth,pixelheight);
 
 	Raytracer raytracer = Raytracer();
@@ -369,6 +399,7 @@ int main(int args, char* argv[]){
 
 	for(int x = 0; x < pixelwidth; x++){
 		for(int y = 0; y < pixelheight; y++){
+			//cout << "going in for loop??????" << endl;
 			Ray ray = camera.generateRay(x,y);
 
 			Color getColor = raytracer.trace(ray,maxdepth);
