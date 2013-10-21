@@ -11,8 +11,9 @@ Pointlight::Pointlight()
         this->type = "point";
 }
 
-Pointlight::Pointlight(Point p, Color c){
+Pointlight::Pointlight(Point p, Color c, Color at){
         this->pos = p;
         this->color = c;
         this->type = "point";
+        this-> att = at;
 }

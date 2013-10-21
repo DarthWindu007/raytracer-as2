@@ -5,12 +5,12 @@ ifeq ($(shell sw_vers 2>/dev/null | grep Mac | awk '{ print $$2}'),Mac)
     	-L"/System/Library/Frameworks/OpenGL.framework/Libraries" \
     	-lGL -lGLU -lm -lstdc++
 else
-	CFLAGS = -g -DGL_GLEXT_PROTOTYPES -Iglut-3.7.6-bin
+	CFLAGS = -g -DGL_GLEXT_PROTOTYPES -Iglut-3.7.6-bin -O3
 	LDFLAGS = -lglut -lGL -lGLU -L./ -lfreeimage
 endif
 	
 RM = /bin/rm -f 
-all: main 
+all: clean main 
 main:  camera.o light.o raytracer.o directionallight.o pointlight.o point.o vector.o normal.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o main.o
 	$(CC) $(CFLAGS) -o as2 camera.o light.o raytracer.o directionallight.o pointlight.o vector.o normal.o point.o ray.o color.o brdf.o localgeo.o sample.o matrix.o transformation.o main.o $(LDFLAGS) 
 vector.o: vector.cpp

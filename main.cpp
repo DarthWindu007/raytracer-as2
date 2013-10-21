@@ -27,15 +27,20 @@ std::vector<Triangle> triangles;
 
 std::vector<Point> vertices;
 
-std::vector<Transformation> trans;
+std::vector<Matrix> trans;
 
 Point lookfrom, lookat;
 Vector up;
 float fov;
 
-Color currKa,currKd,currKs,currEm;
+Color currKa=Color();
+Color currKd = Color();
+Color currKs = Color();
+Color currEm = Color();
 Color currKr = Color();
-float currSp;
+float currSp = 1;
+
+Color attenuation = Color();
 
 void loadScene(std::string file) {
 
@@ -131,6 +136,8 @@ void loadScene(std::string file) {
       	Matrix newtrans = Matrix();
       	newtrans = newtrans.identityMat();
       	BRDF newcol = BRDF(currKa,currKd,currKs,currKr,currEm,currSp);
+        if(trans.size()!=0)
+          newtrans = trans.back();
       	Sphere newS = Sphere(rad,cen,newtrans,newcol);
       	shapes.push_back(newS);
       	shapes.back().radius = rad;
@@ -202,6 +209,8 @@ void loadScene(std::string file) {
               	Matrix newtrans = Matrix();
       	newtrans = newtrans.identityMat();
       	BRDF newcol = BRDF(currKa,currKd,currKs,currKr,currEm,currSp);
+        if(trans.size()!=0)
+          newtrans = trans.back();
         Triangle newTri = Triangle(p1,p2,p3,newtrans,newcol);
        //cout<<newTri.a<<endl;
         shapes.push_back(newTri);
@@ -247,7 +256,18 @@ void loadScene(std::string file) {
         // y: atof(splitline[2].c_str())
         // z: atof(splitline[3].c_str())
         // Update top of matrix stack
-
+        cout << "translate" << endl;
+        Matrix mat = Matrix();
+        Matrix id = mat.identityMat();
+        Matrix transMat = mat.transMat(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
+        if(trans.size()==0)
+          trans.push_back(transMat);
+        else{
+          Matrix prev = trans.back();
+          trans.pop_back();
+          trans.push_back(prev*transMat);
+        }
+        cout << "translate exit" << endl;
       }
       //rotate x y z angle
       //  Rotate by angle (in degrees) about the given axis as in OpenGL.
@@ -257,6 +277,17 @@ void loadScene(std::string file) {
         // z: atof(splitline[3].c_str())
         // angle: atof(splitline[4].c_str())
         // Update top of matrix stack
+        cout << "rotate" << endl;
+                Matrix mat = Matrix();
+        Matrix transMat = mat.axisRotMat(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()),atof(splitline[4].c_str()));
+        if(trans.size()==0)
+          trans.push_back(transMat);
+        else{
+          Matrix prev = trans.back();
+          trans.pop_back();
+          trans.push_back(prev*transMat);
+        }
+        cout << "rotate exit" << endl;
       }
       //scale x y z
       //  Scale by the corresponding amount in each axis (a non-uniform scaling).
@@ -265,6 +296,17 @@ void loadScene(std::string file) {
         // y: atof(splitline[2].c_str())
         // z: atof(splitline[3].c_str())
         // Update top of matrix stack
+        cout << "scale" << endl;
+                Matrix mat = Matrix();
+        Matrix transMat = mat.scaleMat(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
+        if(trans.size()==0)
+          trans.push_back(transMat);
+        else{
+          Matrix prev = trans.back();
+          trans.pop_back();
+          trans.push_back(prev*transMat);
+        }
+        cout << "scale exit" << endl;
       }
       //pushTransform
       //  Push the current modeling transform on the stack as in OpenGL. 
@@ -272,6 +314,14 @@ void loadScene(std::string file) {
       //   the camera to preserve the â€œidentityâ€ transformation.
       else if(!splitline[0].compare("pushTransform")) {
         //mst.push();
+        cout << "push transform" << endl;
+        Matrix m = Matrix();
+        if(trans.size()!=0)
+          m = trans.back();
+        else
+          m = m.identityMat();
+        trans.push_back(m);
+        cout << "exit push transform" << endl;
       }
       //popTransform
       //  Pop the current transform from the stack as in OpenGL. 
@@ -281,6 +331,9 @@ void loadScene(std::string file) {
       //  discussed above).
       else if(!splitline[0].compare("popTransform")) {
         //mst.pop();
+        cout << "popTransform" << endl;
+        trans.pop_back();
+        cout << "popTransform exit" << endl;
       }
 
       //directional x y z r g b
@@ -314,7 +367,7 @@ void loadScene(std::string file) {
         Point vec = Point(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
       	Color lcol = Color(atof(splitline[4].c_str()),atof(splitline[5].c_str()),atof(splitline[6].c_str()));
 
-      	Pointlight dl = Pointlight(vec,lcol);
+      	Pointlight dl = Pointlight(vec,lcol,attenuation);
 
       	lights.push_back(dl);
       }
@@ -325,6 +378,8 @@ void loadScene(std::string file) {
         // const: atof(splitline[1].c_str())
         // linear: atof(splitline[2].c_str())
         // quadratic: atof(splitline[3].c_str())
+        attenuation = Color(atof(splitline[1].c_str()),atof(splitline[2].c_str()),atof(splitline[3].c_str()));
+        
       }
       //ambient r g b
       //  The global ambient color to be added for each object 
@@ -403,19 +458,29 @@ int main(int args, char* argv[]){
 			Ray ray = camera.generateRay(x,y);
 
 			Color getColor = raytracer.trace(ray,maxdepth);
-
-			color.rgbRed = getColor.r*255;
+      if(getColor.r > 1 || getColor.g > 1 || getColor.b > 1){
+          cout<< getColor << "     at:   " << x << ", " << y<<endl;
+      }
+      if(getColor.r > 1)
+        getColor.r=1;
+      if(getColor.g > 1)
+        getColor.g=1;
+      if(getColor.b > 1)
+        getColor.b=1;
+      //cout<< getColor <<endl;
+			
+      color.rgbRed = getColor.r*255;
 			color.rgbGreen = getColor.g*255;
 			color.rgbBlue = getColor.b*255;
 
 			if(color.rgbRed > 255)
-				color.rgbRed = 255;
+				color.rgbBlue = 255;
 
 			if(color.rgbGreen > 255)
 				color.rgbGreen = 255;
 
 			if(color.rgbBlue > 255)
-				color.rgbBlue = 255;
+				color.rgbRed = 255;
 
 			FreeImage_SetPixelColor(bitmap,x,y,&color);
 		}

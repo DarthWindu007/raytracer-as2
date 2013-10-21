@@ -174,7 +174,7 @@ public:
 			bool check_parallel = (triangle_normal*d)!=0.0;
 
 			//cout<<triangle_normal<<endl;
-			if(check_parallel)
+			if(check_parallel)	
 			{
 				float time_intersection = -(triangle_normal*p+(triangle_normal*a*-1))/(triangle_normal*d);
                 //cout << time_intersection <<endl;
@@ -225,7 +225,7 @@ public:
 		//exit(1);
 		for(int i = 0; i <s.size();i++ ){
 			Point ray_point = s[i].transform.inverse() * ray.pos;
-			Vector ray_direction = (s[i].transform.inverse() * ray.dir).norm();
+			Vector ray_direction = (s[i].transform.inverse() * (ray.dir).norm()).norm();
 			Ray getRay = Ray(ray_point, ray_direction);
 			//cout << "ray_point:   " << ray_point << "   i=   " << i <<endl;
 			//cout << "ray_direction:    " << ray_direction << "     i=    "<< i << endl<<endl;
@@ -300,7 +300,7 @@ public:
 	   		{
 	   			Vector lightDir = (first.pos - local.pos).norm();
 	   			
-	   			shadowRay = Ray(local.pos + local.normal*0.001f,lightDir);
+	   			shadowRay = Ray(local.pos + interNormal*0.001f,lightDir);
 
 	   			shadow_hit = getFirst(shadowRay,shapes);
                 //bool u = shadow_hit.shape.type == "";
@@ -310,13 +310,22 @@ public:
 	   				//cout<< lightDir<<endl;
 	   				float dot = max(lightDir*interNormal,0.0f);
 	   				//cout<<dot<<endl;
-	   				Color diff = (kd*first.color)*dot;
+	   				Color diff = Color();
+	   				if(dot > 0.0)
+	   					diff = (kd*first.color)*dot;
                     //cout<<diff<<endl;
 	   				Vector r = lightDir*-1.0f + interNormal*(2.0f*(lightDir*interNormal));
 	   				float dot2 = max(r*vec,0.0f);
-	   				Color spec = (ks*first.color)*pow(dot2,sp);
+	   				Color spec = Color();
+	   				if(dot2 > 0.0)
+	   					spec = (ks*first.color)*pow(dot2,sp);
                     
 	   				return_color= return_color+diff+spec;
+
+	   				Vector dv = (first.pos - shadow_hit.local.pos);
+	   				float dist = sqrt(dv.x*dv.x+dv.y*dv.y+dv.z*dv.z);
+	   				float atten = first.att.r + first.att.g*dist + first.att.b*dist*dist;
+	   				return_color = return_color;// * (1/atten);
 	   				//cout<<return_color<<endl;
 	   				//cout << "uiuiuiuuiiui" << endl;
 	   			}
@@ -326,18 +335,23 @@ public:
 	   		{
 	   			Vector lightDir = (first.dir).norm();
 
-	   			shadowRay = Ray(local.pos + local.normal*0.001f,lightDir);
+	   			shadowRay = Ray(local.pos + interNormal*0.001f,lightDir);
 
 	   			shadow_hit = getFirst(shadowRay,shapes);	
 
 	   			if(!shadow_hit.local.isDefined)
 	   			{
 	   				float dot = max(lightDir*interNormal,0.0f);
-	   				Color diff = (kd*first.color)*dot;
-
+	   				//Color diff = (kd*first.color)*dot;
+	   				Color diff = Color();
+	   				if(dot > 0.0)
+	   					diff = (kd*first.color)*dot;
 	   				Vector r = lightDir*-1.0f + interNormal*(2.0f*(lightDir*interNormal));
 	   				float dot2 = max(r*vec,0.0f);
-	   				Color spec = (ks*first.color)*pow(dot2,sp);
+	   				// /Color spec = (ks*first.color)*pow(dot2,sp);
+	   				Color spec = Color();
+	   				if(dot2 > 0.0)
+	   					spec = (ks*first.color)*pow(dot2,sp);
 
 	   				return_color=return_color+diff+spec;
 
@@ -374,24 +388,27 @@ public:
 		//cout << lights[0].color << endl;
 		Color ks = shape.brdf.ks;
 
-		Normal norm = local.normal;
+		Normal norm = (local.normal).norm();
 		Point point = local.pos;
 
 		//cout << local.normal << endl;
 
-		//Vector reflect = ray.getReflection(norm);
+		Vector reflect = (ray.getReflection(norm.norm())).norm();
 		//reflect=reflect.norm();
 
-		//Ray rayReflect = Ray(point+0.001*norm,reflect);
+		Ray rayReflect = Ray(point+norm*0.001f,reflect);
 
-		Vector currDir = ray.pos - point;
-		currDir = currDir.norm();
+		Vector currDir = (ray.pos - point).norm();
+		//currDir = currDir.norm();
 
+
+		ns.local.normal = (norm).norm();
 		Color shade = doPhong(currDir,ns);
+
 
 		result=result+shade;
 		//cout << result << endl;
-		//result+=ks*trace(rayReflect,depth-1);
+		result=result+ks*trace(rayReflect,depth-1);
 		return result;
 	}
 };

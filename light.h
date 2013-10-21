@@ -9,6 +9,7 @@ class Light
 public:
 	Vector dir;
 	Point pos;
+	Color att;
 	Color color;
 	string type;
 };

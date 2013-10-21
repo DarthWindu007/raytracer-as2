@@ -14,7 +14,7 @@ using namespace std;
 class Pointlight : public Light {
 public:
     Pointlight();
-    Pointlight(Point, Color);
+    Pointlight(Point, Color, Color);
     
 };
 
